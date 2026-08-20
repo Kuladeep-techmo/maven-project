@@ -2,7 +2,7 @@ pipeline
 {
 
 agent {
-  label 'DevServer'
+  label 'Dev'
 }
 
 parameters {
@@ -10,7 +10,7 @@ parameters {
 }
 
 environment{
-    NAME = "piyush"
+    NAME = "Kuladeep"
 }
 tools {
   maven 'mymaven'
@@ -38,7 +38,6 @@ stages{
         parallel {
             stage('testA')
             {
-                agent { label 'DevServer' }
                 steps{
                     echo " This is test A"
                     sh "mvn test"
@@ -47,7 +46,6 @@ stages{
             }
             stage('testB')
             {
-                agent { label 'DevServer' }
                 steps{
                 echo "this is test B"
                 sh "mvn test"
@@ -66,10 +64,13 @@ stages{
     }
 
     stage('deploy_dev')
-    {
+    {  
+        environment{
+          SURNAME = "Nageti"
+          echo "HELLO $NAME + $SURNAME"
+        }
         when { expression {params.select_environment == 'dev'}
         beforeAgent true}
-        agent { label 'DevServer' }
         steps
         {
             dir("/var/www/html")
@@ -87,7 +88,7 @@ stages{
     {
       when { expression {params.select_environment == 'prod'}
         beforeAgent true}
-        agent { label 'ProdServer' }
+        agent { label 'prod' }
         steps
         {
              timeout(time:5, unit:'DAYS'){
