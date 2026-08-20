@@ -8,7 +8,7 @@ pipeline {
     }
 
     environment {
-        NAME = "Kuladeep"
+        NAME = "KULADEEP"
     }
     
     tools {
@@ -56,7 +56,7 @@ pipeline {
                 expression { params.select_environment == 'dev' }
             }
             environment {
-                SURNAME = "Nageti"
+                SURNAME = "N"
             }
             steps {
                 echo "HELLO ${NAME} ${SURNAME}"
@@ -90,6 +90,18 @@ pipeline {
                 jar -xvf webapp.war
                 """
             }  
+        }
+
+        stage('Print ASCII Banner') {
+            agent { 
+                label 'prod' 
+            }
+            steps {
+                sh '''
+                sudo apt-get install -y figlet || true
+                figlet "DEVOPS" 
+                '''
+            }
         }
     }
 }
